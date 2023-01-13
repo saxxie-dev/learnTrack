@@ -16,4 +16,4 @@ updateLoginHistory user = do
     user 
         |> modify #logins ((+) 1)
         |> updateRecord
-    return ()
+    pure ()

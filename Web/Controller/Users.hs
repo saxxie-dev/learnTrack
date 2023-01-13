@@ -27,9 +27,10 @@ instance Controller UsersController where
 
     action UpdateUserAction { userId } = do
         user <- fetch userId
+        accessDeniedUnless (userId == currentUserId)
         user
             |> buildUser
-            |> ifValid \case
+            >>= ifValid \case
                 Left user -> render EditView { .. }
                 Right user -> do
                     hashedPass <- hashPassword (get #passwordHash user)
@@ -43,7 +44,7 @@ instance Controller UsersController where
         let user = newRecord @User
         user
             |> buildUser
-            |> ifValid \case
+            >>= ifValid \case
                 Left user -> render NewView { .. } 
                 Right user -> do
                     hashedPass <- hashPassword (get #passwordHash user)
@@ -63,3 +64,4 @@ buildUser user = user
     |> fill @["email", "passwordHash", "failedLoginAttempts", "logins"]
     |> validateField #email isEmail 
     |> validateField #passwordHash (hasMinLength 8)
+    |> validateIsUnique #email

@@ -17,7 +17,7 @@ instance View EditView where
 
 renderForm :: Track -> Html
 renderForm track = formFor track [hsx|
-    {(textField #ownerId)}
+    {(textField #name)}
     {(textField #completion)}
     {(textField #size)}
     {(textField #paused)}

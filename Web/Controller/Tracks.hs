@@ -7,6 +7,8 @@ import Web.View.Tracks.Edit
 import Web.View.Tracks.Show
 
 instance Controller TracksController where
+    beforeAction = ensureIsUser
+    
     action TracksAction = do
         tracks <- query @Track |> fetch
         render IndexView { .. }
@@ -25,19 +27,22 @@ instance Controller TracksController where
 
     action UpdateTrackAction { trackId } = do
         track <- fetch trackId
+        accessDeniedUnless (track.ownerId == currentUser.id)
         track
             |> buildTrack
+            |> set #ownerId (currentUserId)
             |> ifValid \case
                 Left track -> render EditView { .. }
                 Right track -> do
                     track <- track |> updateRecord
                     setSuccessMessage "Track updated"
-                    redirectTo EditTrackAction { .. }
+                    redirectTo TracksAction
 
     action CreateTrackAction = do
         let track = newRecord @Track
         track
             |> buildTrack
+            |> set #ownerId (currentUserId)
             |> ifValid \case
                 Left track -> render NewView { .. } 
                 Right track -> do
@@ -47,9 +52,10 @@ instance Controller TracksController where
 
     action DeleteTrackAction { trackId } = do
         track <- fetch trackId
+        accessDeniedUnless (track.ownerId == currentUser.id)
         deleteRecord track
         setSuccessMessage "Track deleted"
         redirectTo TracksAction
 
 buildTrack track = track
-    |> fill @["ownerId", "completion", "size", "paused"]
+    |> fill @["name", "completion", "size", "paused"]

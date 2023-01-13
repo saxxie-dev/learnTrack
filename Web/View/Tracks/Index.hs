@@ -31,7 +31,8 @@ instance View IndexView where
 renderTrack :: Track -> Html
 renderTrack track = [hsx|
     <tr>
-        <td>{track}</td>
+        <td>{track.name}</td>
+        <td>{track.completion} / {track.size}</td>
         <td><a href={ShowTrackAction track.id}>Show</a></td>
         <td><a href={EditTrackAction track.id} class="text-muted">Edit</a></td>
         <td><a href={DeleteTrackAction track.id} class="js-delete text-muted">Delete</a></td>

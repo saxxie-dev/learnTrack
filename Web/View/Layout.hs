@@ -36,7 +36,7 @@ navbar = [hsx|
         {loginButton}
     </nav>
 |] where loginButton = case currentUserOrNothing of
-                    Just user -> [hsx| <a href={DeleteSessionAction}>Log out</a>|]
+                    Just user -> [hsx| <a class="js-delete" href={DeleteSessionAction}>Log out</a>|]
                     Nothing -> [hsx| <a href={NewSessionAction}>Log in</a>
                                     <a href={NewUserAction}>Sign up</a>|]
 

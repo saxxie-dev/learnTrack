@@ -1,0 +1,6 @@
+ALTER TABLE tracks ADD COLUMN name TEXT NOT NULL;
+ALTER TABLE tracks ADD COLUMN url TEXT NOT NULL;
+CREATE OR REPLACE FUNCTION set_updated_at_to_now() RETURNS TRIGGER AS $$BEGIN
+    NEW.updated_at = NOW();
+    RETURN NEW;
+END;$$ language PLPGSQL;
