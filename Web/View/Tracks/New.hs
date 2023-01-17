@@ -11,7 +11,7 @@ instance View NewView where
     |]
         where
             breadcrumb = renderBreadcrumb
-                [ breadcrumbLink "Tracks" TracksAction
+                [ breadcrumbLink "Tracks" $ TracksAction currentUserId
                 , breadcrumbText "New Track"
                 ]
 
@@ -20,7 +20,7 @@ renderForm track = formFor track [hsx|
     {(textField #name)}
     {(textField #completion)}
     {(textField #size)}
-    {(textField #paused)}
+    {(checkboxField #paused)}
     {submitButton}
 
 |]

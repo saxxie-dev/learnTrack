@@ -18,11 +18,11 @@ CREATE TABLE tracks (
     owner_id UUID NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL,
-    completion INT[] DEFAULT '{}' NOT NULL,
     size INT NOT NULL,
     paused BOOLEAN DEFAULT false NOT NULL,
     name TEXT NOT NULL,
-    url TEXT NOT NULL
+    url TEXT NOT NULL,
+    completion BOOLEAN[] DEFAULT '{}' NOT NULL
 );
 CREATE INDEX tracks_owner_id_index ON tracks (owner_id);
 CREATE INDEX tracks_created_at_index ON tracks (created_at);

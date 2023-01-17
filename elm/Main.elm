@@ -1,46 +1,111 @@
 module Main exposing (main)
 
+import Api.Generated exposing (Track, Widget(..), widgetDecoder)
 import Browser
-import Html exposing (Html, h2, text)
+import Html exposing (Html, div, h1, h2, p, pre, text)
+import Json.Decode as D
 
 
-type alias Model =
-  {}
+type Model
+    = TrackModel Track
+    | ErrorModel String
 
 
 type Msg
-  = NoOp
+    = NoOp
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-  case msg of
-    NoOp ->
-      ( model, Cmd.none )
+    case msg of
+        NoOp ->
+            ( model, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-  Sub.none
+    Sub.none
 
 
 view : Model -> Html msg
 view model =
-  h2 [] [ text "Elm is wodrking!" ]
+    div []
+        [ text "<🌳>"
+        , widgetView model
+        , text "</🌳>"
+        ]
 
 
-main : Program () Model Msg
+widgetView : Model -> Html msg
+widgetView model =
+    case model of
+        ErrorModel errorMsg ->
+            errorView errorMsg
+
+        TrackModel track ->
+            trackView track
+
+
+errorView : String -> Html msg
+errorView errorMsg =
+    pre [] [ text "Widget Error: ", text errorMsg ]
+
+
+trackView : Track -> Html msg
+trackView track =
+    div []
+        [ h2 [] [ text track.name ]
+        , p []
+            [ text
+                (if track.name == "asdf" then
+                    "You have read this track"
+
+                 else
+                    "You have not read this track"
+                )
+            ]
+        ]
+
+
+showReview : Maybe String -> Html msg
+showReview maybeReview =
+    case maybeReview of
+        Just review ->
+            text ("Your track review: " ++ review)
+
+        Nothing ->
+            text "You have not reviewed this track"
+
+
+main : Program D.Value Model Msg
 main =
-  Browser.element
-    { init = init
-    , update = update
-    , subscriptions = subscriptions
-    , view = view
-    }
+    Browser.element
+        { init = init
+        , update = update
+        , subscriptions = subscriptions
+        , view = view
+        }
 
 
-init : () -> ( Model, Cmd Msg )
-init _ =
-  ( {}
-  , Cmd.none
-  )
+init : D.Value -> ( Model, Cmd Msg )
+init flags =
+    ( initialModel flags
+    , Cmd.none
+    )
+
+
+initialModel : D.Value -> Model
+initialModel flags =
+    case D.decodeValue widgetDecoder flags of
+        Ok widget ->
+            widgetFlagToModel widget
+
+        Err error ->
+            ErrorModel (D.errorToString error)
+
+
+widgetFlagToModel : Widget -> Model
+widgetFlagToModel widget =
+    case widget of
+        TrackWidget track ->
+            TrackModel track

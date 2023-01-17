@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "run-dev-elm": "parcel watch elm/index.js --out-dir static/elm",
+    "run-dev-elm": "npm run gen-types && parcel watch elm/index.js --out-dir static/elm",
     "start": "echo Use IHP\\'s ./start script instead. && exit 1",
-    "build": "parcel build elm/index.js --out-dir static/elm"
+    "build": "parcel build elm/index.js --out-dir static/elm",
+    "gen-types": "nix-shell --run './Application/Script/GenerateElmTypes.hs'"
   },
   "repository": {
     "type": "git",
@@ -20,11 +21,16 @@
   },
   "homepage": "https://github.com/digitallyinduced/ihp-boilerplate#readme",
   "dependencies": {
+    "@tailwindcss/forms": "^0.5.3",
+    "autoprefixer": "^10.4.13",
     "node-elm-compiler": "^5.0.5",
-    "parcel-bundler": "^1.12.4"
+    "parcel-bundler": "^1.8.1",
+    "postcss": "^8.4.21",
+    "tailwindcss": "^3.2.4"
   },
   "devDependencies": {
     "concurrently": "^5.3.0",
-    "elm-hot": "^1.1.5"
+    "elm-hot": "^1.1.5",
+    "elm-tailwind-css": "^1.1.1"
   }
 }

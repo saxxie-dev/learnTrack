@@ -6,12 +6,14 @@ data EditView = EditView { track :: Track }
 instance View EditView where
     html EditView { .. } = [hsx|
         {breadcrumb}
-        <h1>Edit Track</h1>
+        <div class="display-block md:text-center">
+        <h1 >Edit Track</h1>
+        </div>
         {renderForm track}
     |]
         where
             breadcrumb = renderBreadcrumb
-                [ breadcrumbLink "Tracks" TracksAction
+                [ breadcrumbLink "Tracks" $ TracksAction currentUserId
                 , breadcrumbText "Edit Track"
                 ]
 
@@ -20,7 +22,7 @@ renderForm track = formFor track [hsx|
     {(textField #name)}
     {(textField #completion)}
     {(textField #size)}
-    {(textField #paused)}
+    {(checkboxField #paused)}
     {submitButton}
 
 |]

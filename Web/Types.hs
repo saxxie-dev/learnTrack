@@ -32,9 +32,8 @@ data UsersController
     deriving (Eq, Show, Data)
 
 data TracksController
-    = TracksAction
+    = TracksAction { ownerId :: !(Id User) }
     | NewTrackAction
-    | ShowTrackAction { trackId :: !(Id Track) }
     | CreateTrackAction
     | EditTrackAction { trackId :: !(Id Track) }
     | UpdateTrackAction { trackId :: !(Id Track) }

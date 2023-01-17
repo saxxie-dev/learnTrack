@@ -6,35 +6,30 @@ data IndexView = IndexView { tracks :: [Track]  }
 instance View IndexView where
     html IndexView { .. } = [hsx|
         {breadcrumb}
-
-        <h1>Index<a href={pathTo NewTrackAction} class="btn btn-primary ms-4">+ New</a></h1>
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Track</th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>{forEach tracks renderTrack}</tbody>
-            </table>
-            
-        </div>
+        <section>
+            <h1>Learning tracks<a href={pathTo NewTrackAction} class="btn btn-primary ms-4">+ New</a></h1>
+            {forEach tracks renderTrack}
+        </section>
     |]
         where
             breadcrumb = renderBreadcrumb
-                [ breadcrumbLink "Tracks" TracksAction
+                [ breadcrumbLink "Tracks" $ TracksAction currentUserId
                 ]
 
 renderTrack :: Track -> Html
 renderTrack track = [hsx|
-    <tr>
-        <td>{track.name}</td>
-        <td>{track.completion} / {track.size}</td>
-        <td><a href={ShowTrackAction track.id}>Show</a></td>
-        <td><a href={EditTrackAction track.id} class="text-muted">Edit</a></td>
-        <td><a href={DeleteTrackAction track.id} class="js-delete text-muted">Delete</a></td>
-    </tr>
+    <section style="display: flex; flex-direction: horizontal">
+        <div style="width: 300px; flex-grow: 0">{track.name}
+          (<a href={EditTrackAction track.id} class="text-muted">Edit</a>)
+          (<a href={DeleteTrackAction track.id} class="js-delete text-muted">Delete</a>)
+        </div>
+        <div>{forEachWithIndex track.completion renderTrackCheck}</div>
+    </section>
+|]
+
+
+
+renderTrackCheck :: (Int, Bool) -> Html
+renderTrackCheck (i, b) = [hsx|
+    <label>{i}<input type="checkbox" checked={b}/></label>
 |]

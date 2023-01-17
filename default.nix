@@ -13,9 +13,9 @@ let
             hlint
             p.ihp
             hspec
+            haskell-to-elm
         ];
         otherDeps = p: with p; [
-            # Native dependencies, e.g. imagemagick
             nodejs
             elmPackages.elm
         ];
