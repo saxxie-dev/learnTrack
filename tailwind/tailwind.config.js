@@ -8,6 +8,7 @@ module.exports = {
     },
     content: [
         "Web/View/**/*.hs",
+        "elm/*.elm"
     ],
     safelist: [
         // Add custom class names.

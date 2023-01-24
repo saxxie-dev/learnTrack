@@ -4,6 +4,7 @@ module Application.Helper.View (
     -- To use the built in login:
     -- module IHP.LoginSupport.Helper.View
     trackWidget,
+    gridWidget,
     Widget(..),
 ) where
 
@@ -18,6 +19,7 @@ import Language.Haskell.To.Elm
 
 data Widget
   = TrackWidget TrackJSON
+  | TrackGridWidget
   deriving ( Generic
            , Aeson.ToJSON
            , SOP.Generic
@@ -52,3 +54,8 @@ trackWidget track = [hsx|
 |]
     where
         trackData :: Widget  = TrackWidget $ trackToJSON track
+
+gridWidget :: Html
+gridWidget = [hsx|
+      <div  data-flags={encode TrackGridWidget} class="elm"></div>
+|]

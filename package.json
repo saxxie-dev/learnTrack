@@ -23,6 +23,7 @@
   "dependencies": {
     "@tailwindcss/forms": "^0.5.3",
     "autoprefixer": "^10.4.13",
+    "elm-format": "^0.8.5",
     "node-elm-compiler": "^5.0.5",
     "parcel-bundler": "^1.8.1",
     "postcss": "^8.4.21",
@@ -30,7 +31,6 @@
   },
   "devDependencies": {
     "concurrently": "^5.3.0",
-    "elm-hot": "^1.1.5",
-    "elm-tailwind-css": "^1.1.1"
+    "elm-hot": "^1.1.5"
   }
 }

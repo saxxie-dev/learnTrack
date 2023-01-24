@@ -25,6 +25,7 @@ defaultLayout inner = H.docTypeHtml ! A.lang "en" $ [hsx|
     <div class="container mt-4">
         {renderFlashMessages}
         {inner}
+        {modal}
     </div>
 </body>
 |]
@@ -62,7 +63,7 @@ scripts = [hsx|
         <script src={assetPath "/helpers.js"}></script>
         <script src={assetPath "/ihp-auto-refresh.js"}></script>
         <script src={assetPath "/app.js"}></script>
-        <!--<script src={assetPath "/elm/index.js"}></script>-->
+        <script src={assetPath "/elm/index.js"}></script>
     |]
 
 devScripts :: Html

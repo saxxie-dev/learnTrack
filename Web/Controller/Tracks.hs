@@ -16,7 +16,8 @@ instance Controller TracksController where
 
     action NewTrackAction = do
         let track = newRecord
-        render NewView { .. }
+        setModal NewView { .. }
+        jumpToAction (TracksAction currentUserId)
 
     action EditTrackAction { trackId } = do
         track <- fetch trackId

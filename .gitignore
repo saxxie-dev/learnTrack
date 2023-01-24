@@ -23,3 +23,5 @@ static/elm
 # Ignore locally checked out IHP version
 IHP
 static/app.css
+elm/TW.elm
+elm/TW/**/*.elm
